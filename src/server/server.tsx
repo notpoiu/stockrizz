@@ -103,14 +103,19 @@ export async function AnalyseImage(img_b64: string) {
             presence_penalty: 0,
         });
 
-        response = JSON.parse(gpt_response.choices[0].message.content || "{analysis: [], overall_rating: 0}");
+        try{
+            response = JSON.parse(gpt_response.choices[0].message.content || "{analysis: [], overall_rating: 0}");
+        
     
-
-        if (response && RizzAnalysisSchema.safeParse(response)) {
-            break;
-        } else {
+            if (response && RizzAnalysisSchema.safeParse(response)) {
+                break;
+            } else {
+                console.log("Invalid response, retrying...");
+                console.log(response);
+            }
+        } catch (e) {
             console.log("Invalid response, retrying...");
-            console.log(response);
+            break;
         }
     }
 
