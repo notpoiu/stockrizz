@@ -104,9 +104,8 @@ export async function AnalyseImage(img_b64: string) {
         });
 
         try{
-            response = JSON.parse(gpt_response.choices[0].message.content || "{analysis: [], overall_rating: 0}");
-        
-    
+            response = JSON.parse(gpt_response.choices[0].message.content?.replaceAll("```json","").replaceAll("```","") || "{analysis: [], overall_rating: 0}");
+            
             if (response && RizzAnalysisSchema.safeParse(response)) {
                 break;
             } else {
