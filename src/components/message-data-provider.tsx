@@ -1,7 +1,7 @@
 "use client";
 
 import { RizzAnalysis } from "@/server/types";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 const providerContext = createContext({data: {}, exists: false} as {data: RizzAnalysis, exists: boolean});
@@ -12,6 +12,8 @@ export const useMessageData = () => {
 
 export function MessageDataProvider({ children }: {children: ReactNode}) {
 
+    const router = useRouter();
+    const pathname = usePathname();
     const searchParams = useSearchParams();
 
     const [data, setData] = useState<RizzAnalysis>({
@@ -28,6 +30,8 @@ export function MessageDataProvider({ children }: {children: ReactNode}) {
             } catch(e) {
                 console.error(e);
             }
+
+            router.replace(pathname);
 
             return;
         }
