@@ -6,6 +6,13 @@ import Image from "next/image";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import React from "react";
 import { BarChart2Icon } from "lucide-react";
+import { useMessageData } from "./message-data-provider";
+
+const TextBubbleColors = {
+    "to_usr": "#e5e5ea",
+    "from_usr": "#39a1f9"
+}
+
 
 function TextWithLineBreaks({text}: {text: string}) {
     const textWithBreaks = text.split('\n').map((text, index) => (
@@ -16,11 +23,6 @@ function TextWithLineBreaks({text}: {text: string}) {
     ));
   
     return <div className="max-w-[270px]">{textWithBreaks}</div>;
-}
-
-const TextBubbleColors = {
-    "to_usr": "#e5e5ea",
-    "from_usr": "#39a1f9"
 }
 
 export function TextBubble({message, from, key}: {message: RizzAnalysisMessage, from: "to_usr" | "from_usr", key?: number}) {
@@ -61,26 +63,12 @@ export function TextBubble({message, from, key}: {message: RizzAnalysisMessage, 
 }
 
 export function IMessageComponent() {
-    const [data, setData] = useState<RizzAnalysis>({analysis: [], overall_rating: 0});
-    const [doesExist, setDoesExist] = useState(false);
-
-    useEffect(() => {
-        try{
-            setData(JSON.parse(localStorage.getItem("analysis") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
-            
-            if (localStorage.getItem("analysis") !== null) {
-                setDoesExist(true);
-            }
-        } catch (e) {
-            console.error(e);
-            setDoesExist(false);
-        }
-    },[])
+    const { data, exists } = useMessageData();
     
     return (
         <div className="flex flex-col px-2 py-2 w-[40vw] *:mb-4">
-            {!doesExist && <p className="text-center text-gray-500">No analysis data found</p>}
-            {doesExist && data.analysis.map((message, index) => {
+            {!exists && <p className="text-center text-gray-500">No analysis data found</p>}
+            {exists && data.analysis.map((message, index) => {
                 return <TextBubble message={message} from={message.from} key={index} /> 
             })}
         </div>
