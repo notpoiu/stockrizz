@@ -1,9 +1,8 @@
 "use client";
 
-import { RizzAnalysis, RizzAnalysisMessage } from "@/server/types";
-import { useEffect, useState } from "react";
+import { RizzAnalysisMessage } from "@/server/types";
 import Image from "next/image";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import React from "react";
 import { BarChart2Icon } from "lucide-react";
 import { useMessageData } from "./message-data-provider";

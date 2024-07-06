@@ -23,20 +23,26 @@ export function ShareButton({className, variant}: {className?: string, variant?:
     const [urlString, setUrlString] = useState<string>("Loading...");
 
     function Share() {
-        if (!exists) {
+        try{
+            if (!exists) {
+                toast.error("Sorry there was an error generating the link, please try again later.");
+                return;
+            }
+    
+            const url = new URL(window.location.href);
+    
+            // s like share
+            url.searchParams.append("s", btoa(JSON.stringify(data)));
+    
+            setUrlString(url.toString());
+    
+            toast.success("Link generated, copied to clipboard!");
+            navigator.clipboard.writeText(url.toString());
+        } catch(e) {
+            console.error(e);
             toast.error("Sorry there was an error generating the link, please try again later.");
-            return;
+            console.log("Data", data, "Exists", exists);
         }
-
-        const url = new URL(window.location.href);
-
-        // s like share
-        url.searchParams.append("s", btoa(JSON.stringify(data)));
-
-        setUrlString(url.toString());
-
-        toast.success("Link generated, copied to clipboard!");
-        navigator.clipboard.writeText(url.toString());
     }
 
     return (
