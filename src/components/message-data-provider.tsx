@@ -46,10 +46,8 @@ export function MessageDataProvider({ children }: {children: ReactNode}) {
 
 
     return (
-        <Suspense>
-            <providerContext.Provider value={{data: data, exists: exists}}>
-                {children}
-            </providerContext.Provider>
-        </Suspense>
+        <providerContext.Provider value={{data: data, exists: exists}}>
+            {children}
+        </providerContext.Provider>
     )
 }

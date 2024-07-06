@@ -5,22 +5,26 @@ import { Button } from "@/components/ui/button";
 import { HomeIcon, SendToBackIcon, StepBack } from "lucide-react";
 import Link from "next/link";
 import { MessageDataProvider } from "@/components/message-data-provider";
+import { Suspense } from "react";
 
 export default function AnalysisPage() {
     return (
-        <MessageDataProvider>
-            <main className="flex flex-col justify-center items-center w-screen h-screen">
-                <h1 className="text-3xl">Analysis</h1>
-                <RizzEloParagraph />
-                
-                <div className="flex-row flex w-screen justify-center items-center">
-                    <IMessageComponent />
-                </div>
-                <div>
-                    <Link href="/"><Button>Go Back <HomeIcon className="ml-2" /></Button></Link>
-                    <ShareButton variant="outline" className="ml-2" />
-                </div>
-            </main>
-        </MessageDataProvider>
-    )
+        <Suspense fallback={<p>Loading...</p>}>
+
+            <MessageDataProvider>
+                <main className="flex flex-col justify-center items-center w-screen h-screen">
+                    <h1 className="text-3xl">Analysis</h1>
+                    <RizzEloParagraph />
+                    
+                    <div className="flex-row flex w-screen justify-center items-center">
+                        <IMessageComponent />
+                    </div>
+                    <div>
+                        <Link href="/"><Button>Go Back <HomeIcon className="ml-2" /></Button></Link>
+                        <ShareButton variant="outline" className="ml-2" />
+                    </div>
+                </main>
+            </MessageDataProvider>
+        </Suspense>
+        )
 }
