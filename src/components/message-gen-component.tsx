@@ -28,7 +28,7 @@ function TextWithLineBreaks({text}: {text: string}) {
 export function TextBubble({message, from, key}: {message: RizzAnalysisMessage, from: "to_usr" | "from_usr", key?: number}) {
     return (
         <div className={`flex ${from == "to_usr" ? "justify-start" : "justify-end"}`} key={key}>
-            <div className={`px-3 py-2 relative bg-[${TextBubbleColors[from]}] ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"} `}>
+            <div className={`px-3 py-2 relative ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"}`} style={{"background": TextBubbleColors[from]}}>
                 <TextWithLineBreaks text={message.message} />
                 <Image src={`/txt_bubble_corner_${from == "to_usr" ? "grey" : "blue"}.png`} alt="" width={36} height={12} className={`absolute ${from == "to_usr" ? "bottom-[-1px] left-[-9px]" : "bottom-[-1px] right-[-9px]"}`} />
 
