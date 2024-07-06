@@ -26,7 +26,7 @@ export function UploadComponent() {
             <div>
                 {!file ? (
                     <div
-                        className="flex flex-col px-2 py-2 items-center justify-center w-full h-full border-4 border-dashed border-gray-300 rounded-lg"
+                        className="flex flex-col px-2 py-2 items-center justify-center w-full h-full border-4 border-dashed border-gray-300 rounded-lg min-w-[36rem]"
                         onDrop={(e) => {
                             e.preventDefault();
                             setFileEnter(false);
@@ -51,7 +51,7 @@ export function UploadComponent() {
                         }}
                     >
                         <p className="text-md text-gray-500 flex flex-col justify-center items-center text-center">
-                            {fileEnter ? "Drop file here" : "Drag and drop file here"}
+                            {fileEnter ? "Drop image of a conversation here" : "Drag and drop the image of the conversation here"}
                             <Button
                                 className="mt-4"
                                 onClick={() => {
