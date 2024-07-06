@@ -2,7 +2,7 @@
 
 import { RizzAnalysis } from "@/server/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { createContext, ReactNode, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
 
 const providerContext = createContext({data: {}, exists: false} as {data: RizzAnalysis, exists: boolean});
 
@@ -42,12 +42,14 @@ export function MessageDataProvider({ children }: {children: ReactNode}) {
         } catch(e) {
             console.error(e);
         }
-    },[])
+    }, [])
 
 
     return (
-        <providerContext.Provider value={{data: data, exists: exists}}>
-            {children}
-        </providerContext.Provider>
+        <Suspense>
+            <providerContext.Provider value={{data: data, exists: exists}}>
+                {children}
+            </providerContext.Provider>
+        </Suspense>
     )
 }
