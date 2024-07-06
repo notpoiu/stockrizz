@@ -8,7 +8,15 @@ export function RizzEloParagraph() {
     const [data, setData] = useState<RizzAnalysis>({analysis: [], overall_rating: 0});
 
     useEffect(() => {
-        setData(JSON.parse(localStorage.getItem("analysis") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
+        try{
+            setData(JSON.parse(localStorage.getItem("analysis") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
+        } catch(e) {
+            console.error(e);
+            setData({
+                analysis: [],
+                overall_rating: 0
+            })
+        }
     },[])
 
     return (

@@ -12,6 +12,9 @@ export default function AnalysisPage() {
         <div className="flex-row flex w-screen justify-center items-center">
             <IMessageComponent />
         </div>
-        <Link href="/"><Button>Go Back <HomeIcon className="ml-2" /></Button></Link>
+        <div>
+            <Link href="/"><Button>Go Back <HomeIcon className="ml-2" /></Button></Link>
+            
+        </div>
     </main>)
 }
