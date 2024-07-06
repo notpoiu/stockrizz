@@ -51,7 +51,7 @@ export function UploadComponent() {
                         }}
                     >
                         <p className="text-md text-gray-500 flex flex-col justify-center items-center text-center">
-                            Drag and drop a png/jpeg image here or paste an image from clipboard
+                            {fileEnter ? "Drop file here" : "Drag and drop file here"}
                             <Button
                                 className="mt-4"
                                 onClick={() => {
@@ -63,6 +63,7 @@ export function UploadComponent() {
                                         
                                         if (selectedFile) {
                                             setFile(selectedFile as File);
+                                            input.remove();
                                         }
                                     };
                                     input.click();
@@ -97,7 +98,6 @@ export function UploadComponent() {
             
             {
                 file && (<Button onClick={async () => {
-                    // turn file into base64
                     const reader = new FileReader();
                     reader.readAsDataURL(file);
 
