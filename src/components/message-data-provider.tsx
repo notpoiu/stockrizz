@@ -1,5 +1,6 @@
 "use client";
 
+import { base64decode } from "@/lib/base64";
 import { RizzAnalysis } from "@/server/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
@@ -25,7 +26,7 @@ export function MessageDataProvider({ children }: {children: ReactNode}) {
     useEffect(() => {
         if (searchParams.has("s")) {
             try {
-                setData(JSON.parse(atob(searchParams.get("s") || "") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
+                setData(JSON.parse(base64decode(searchParams.get("s") || "") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
                 setExists(true);
             } catch(e) {
                 console.error(e);

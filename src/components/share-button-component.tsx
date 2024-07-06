@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { useState } from "react";
 import { useMessageData } from "./message-data-provider";
+import { base64encode } from "@/lib/base64";
 
 export function ShareButton({className, variant}: {className?: string, variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"}) {
     const { data, exists } = useMessageData();
@@ -32,7 +33,7 @@ export function ShareButton({className, variant}: {className?: string, variant?:
             const url = new URL(window.location.href);
     
             // s like share
-            url.searchParams.append("s", btoa(JSON.stringify(data)));
+            url.searchParams.append("s", base64encode(JSON.stringify(data)));
     
             setUrlString(url.toString());
     
