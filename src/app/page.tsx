@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { UploadComponent } from "@/components/upload-component";
-import { InfoIcon } from "lucide-react";
+import { GithubIcon, InfoIcon } from "lucide-react";
 import Link from "next/link";
 
 export default function Home() {
@@ -18,8 +18,13 @@ export default function Home() {
       
 
       <div className="flex flex-row">
-        
         <UploadComponent />
+      </div>
+
+      <div className="fixed bottom-2 left-2">
+        <Link href={"https://github.com/notpoiu/stockrizz"} target="_blank" className="flex flex-row justify-center items-center">
+          <p className="text-xs text-blue-300">Site is open source in Github</p><GithubIcon className="ml-2 w-5 h-5" />
+        </Link>
       </div>
     </main>
   );
