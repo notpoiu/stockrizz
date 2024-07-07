@@ -16,6 +16,18 @@ Then put this in your environement file
 OPENAI_API_KEY=sk-...
 ```
 
+Then install all the dependencies using the following commands:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+# or
+bun install
+```
+
 ## Testing
 
 Finaly, to run the development server, use the following commands:
