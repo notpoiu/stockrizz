@@ -1,6 +1,6 @@
 # Stockrizz
 
-This is a [Next.js](https://nextjs.org/) project that uses GPT-4o to analyse "rizz".
+This is a [Next.js](https://nextjs.org/) project that uses GPT-4o (my openai bill is so cooked) to analyse "rizz".
 
 ## Inspiration
 
