@@ -2,6 +2,10 @@
 
 This is a [Next.js](https://nextjs.org/) project that uses GPT-4o to analyse "rizz".
 
+## Inspiration
+
+Took inspiration from [this tiktok](https://vm.tiktok.com/ZMrBfDyP9/) and thought why not turn it into a actual site (I was very bored 😭)
+
 ## Setup
 
 First, get your [openai api key](https://platform.openai.com/api-keys) and then create a new environement file (ex: `.env.local`).
