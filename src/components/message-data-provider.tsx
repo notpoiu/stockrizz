@@ -5,7 +5,7 @@ import { RizzAnalysis } from "@/server/types";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { createContext, ReactNode, Suspense, useContext, useEffect, useState } from "react";
 
-const providerContext = createContext({data: {}, exists: false} as {data: RizzAnalysis, exists: boolean});
+const providerContext = createContext({data: {analysis: [], overall_rating: 0}, exists: false} as {data: RizzAnalysis, exists: boolean});
 
 export const useMessageData = () => { 
     return useContext(providerContext);
