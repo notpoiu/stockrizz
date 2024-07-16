@@ -14,3 +14,8 @@ export interface RizzAnalysis {
     analysis: RizzAnalysisMessage[];
     overall_rating: number;
 }
+
+export interface message {
+    message: string;
+    from: "to_usr" | "from_usr";
+}

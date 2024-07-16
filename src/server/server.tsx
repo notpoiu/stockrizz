@@ -3,7 +3,7 @@
 import OpenAI from "openai";
 
 import { z } from "zod";
-import { RizzAnalysis } from "./types";
+import { message, RizzAnalysis } from "./types";
 
 const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
@@ -57,17 +57,7 @@ export interface RizzAnalysis {
     overall_rating: number;
 }`
 
-export async function AnalyseImage(img_b64: string) {
-    if (!img_b64) {
-        throw new Error("Invalid file type, only PNG and JPEG are allowed");
-    }
-
-    if (!img_b64.startsWith("data:image/png;base64,") && !img_b64.startsWith("data:image/jpeg;base64,")) {
-        throw new Error("Invalid file type, only PNG and JPEG are allowed");
-    }
-
-
-
+async function analyse(content: any[]) {
     let response = {};
 
     for (let i = 0; i < 3; i++) {
@@ -85,15 +75,8 @@ export async function AnalyseImage(img_b64: string) {
                     ]
                 },
                 {
-                "role": "user",
-                "content": [
-                    {
-                        "type": "image_url",
-                        "image_url": {
-                            "url": img_b64
-                        }
-                    }
-                ]
+                    "role": "user",
+                    "content": content
                 },
             ],
             temperature: 1,
@@ -106,7 +89,7 @@ export async function AnalyseImage(img_b64: string) {
         try{
             response = JSON.parse(gpt_response.choices[0].message.content?.replaceAll("```json","").replaceAll("```","") || "{analysis: [], overall_rating: 0}");
             
-            if (response && RizzAnalysisSchema.safeParse(response)) {
+            if (response && RizzAnalysisSchema.safeParse(response).success) {
                 break;
             } else {
                 console.log("Invalid response, retrying...");
@@ -123,4 +106,41 @@ export async function AnalyseImage(img_b64: string) {
     }
     
     return response as RizzAnalysis;
+}
+
+export async function AnalyseImage(img_b64: string) {
+    if (!img_b64) {
+        throw new Error("Invalid file type, only PNG and JPEG are allowed");
+    }
+
+    if (!img_b64.startsWith("data:image/png;base64,") && !img_b64.startsWith("data:image/jpeg;base64,")) {
+        throw new Error("Invalid file type, only PNG and JPEG are allowed");
+    }
+
+    const result = await analyse([
+        {
+            "type": "image_url",
+            "image_url": {
+                "url": img_b64
+            }
+        }
+    ]);
+
+    return result;
+}
+
+export async function AnalyseConversation(messages: message[]) {
+
+    if (!messages || messages.length === 0) {
+        throw new Error("Invalid messages");
+    }
+
+    const result = await analyse([
+        {
+            "type": "text",
+            "text": messages.map((msg) => `${msg.from === "from_usr" ? "FROM_USER" : "TO_USER"}: ${msg.message}`).join("\n")
+        }
+    ]);
+
+    return result;
 }

@@ -17,8 +17,14 @@ export default function Home() {
       <p className="mb-5">The best rizz engine</p>
       
 
-      <div className="flex flex-row">
+      <div className="flex flex-col justify-center items-center">
         <UploadComponent />
+        <div className="flex flex-row justify-center items-center mt-3">
+          Or create a conversation here:
+          <Link href="/create/conversation" className="ml-2">
+            <Button variant={"outline"}>Create Conversation</Button>
+          </Link>
+        </div>
       </div>
 
       <div className="fixed bottom-2 left-2">
