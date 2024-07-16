@@ -236,6 +236,8 @@ export function ConersationClientPage() {
                                                     localStorage.setItem("analysis", JSON.stringify(data));
                     
                                                     router.push("/analysis");
+
+                                                    localStorage.removeItem("created.convo");
                                                     return "Conversation analysed successfully!";
                                                 },
                                                 error: "Failed to analyse"    
@@ -321,6 +323,7 @@ export function ConersationClientPage() {
                                             localStorage.setItem("analysis", JSON.stringify(data));
             
                                             router.push("/analysis");
+                                            localStorage.removeItem("created.convo");
                                             return "Conversation analysed successfully!";
                                         },
                                         error: "Failed to analyse"    
