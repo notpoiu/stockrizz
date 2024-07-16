@@ -5,6 +5,9 @@ import OpenAI from "openai";
 import { z } from "zod";
 import { message, RizzAnalysis } from "./types";
 
+import { Octokit } from "@octokit/rest";
+import path from "path";
+
 const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
     from: z.enum(["from_usr", "to_usr"]),
@@ -144,3 +147,84 @@ export async function AnalyseConversation(messages: message[]) {
 
     return result;
 }
+
+const github_data = {
+    owner: "notpoiu",
+    repo: "test_database",
+}
+
+const octokit = new Octokit({
+    auth: process.env.GITHUB_TOKEN,
+});
+
+function GenerateConversationID(length: number) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
+function getRandomArbitrary(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+}
+  
+
+export async function ShareConversation(result: RizzAnalysis) {
+    if (!result) {
+        throw new Error("Invalid result");
+    }
+
+    if (!RizzAnalysisSchema.safeParse(result).success) {
+        throw new Error("Invalid result");
+    }
+
+    const contentBase64 = Buffer.from(JSON.stringify(result)).toString('base64');
+
+    const id = GenerateConversationID(getRandomArbitrary(5, 8));
+
+    const params = {
+        owner: github_data.owner,
+        repo: github_data.repo,
+        path: `conversations/${id}.json`,
+        message: 'Conversation Analysis Share',
+        content: contentBase64,
+    };
+
+    await octokit.repos.createOrUpdateFileContents(params);
+
+    return id;
+}
+
+export async function GetConversation(id: string) {
+    if (!id) {
+        return null;
+    }
+
+    const params = {
+        owner: github_data.owner,
+        repo: github_data.repo,
+        path: `conversations/${id}.json`,
+    };
+
+    try{
+        const response = await octokit.repos.getContent(params);
+
+        if (response.status !== 200) {
+            return null;
+        }
+    
+        // @ts-ignore
+        const content = Buffer.from(response.data.content, 'base64').toString('utf-8');
+    
+        return JSON.parse(content) as RizzAnalysis;
+
+    } catch (e) {
+        return null;
+    }
+
+}
+
+        

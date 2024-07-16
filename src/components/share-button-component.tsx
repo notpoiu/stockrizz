@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import { useMessageData } from "./message-data-provider";
 import { base64encode } from "@/lib/base64";
+import { ShareConversation } from "@/server/server";
 
 export function ShareButton({className, variant}: {className?: string, variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"}) {
     const { data, exists } = useMessageData();
@@ -30,15 +31,18 @@ export function ShareButton({className, variant}: {className?: string, variant?:
                 return;
             }
     
-            const url = new URL(window.location.href);
-    
-            // s like share
-            url.searchParams.append("s", base64encode(JSON.stringify(data)));
-    
-            setUrlString(url.toString());
-    
-            toast.success("Link generated, copied to clipboard!");
-            navigator.clipboard.writeText(url.toString());
+            ShareConversation(data).then((id) => {
+                
+                const url = `${window.location.origin}/shared/${id}`
+                setUrlString(url)
+                
+                navigator.clipboard.writeText(url)
+                toast.success("Link copied to clipboard!")
+
+            }).catch((e) => {
+                console.error(e)
+                toast.error("Sorry there was an error generating the link, please try again later.")
+            });
         } catch(e) {
             console.error(e);
             toast.error("Sorry there was an error generating the link, please try again later.");

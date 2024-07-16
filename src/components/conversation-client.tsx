@@ -66,6 +66,7 @@ export function ConersationClientPage() {
     }, [messages]);
 
     useEffect(() => {
+
         const data = localStorage.getItem("created.convo");
         const is_not_null = data && data.length > 0 && data !== "undefined" && data !== "null";
         if (is_not_null && z.array(msgSchema).safeParse(JSON.parse(data)).success) {

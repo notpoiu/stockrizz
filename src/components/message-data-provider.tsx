@@ -13,10 +13,6 @@ export const useMessageData = () => {
 
 export function MessageDataProvider({ children }: {children: ReactNode}) {
 
-    const router = useRouter();
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
-
     const [data, setData] = useState<RizzAnalysis>({
         analysis: [],
         overall_rating: 0
@@ -24,19 +20,6 @@ export function MessageDataProvider({ children }: {children: ReactNode}) {
     const [exists, setExists] = useState(false);
 
     useEffect(() => {
-        if (searchParams.has("s")) {
-            try {
-                setData(JSON.parse(base64decode(searchParams.get("s") || "") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
-                setExists(true);
-            } catch(e) {
-                console.error(e);
-            }
-
-            router.replace(pathname);
-
-            return;
-        }
-
         try{
             setData(JSON.parse(localStorage.getItem("analysis") || "{analysis: [], overall_rating: 0}") as RizzAnalysis);
             setExists(true);
