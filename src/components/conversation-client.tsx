@@ -233,10 +233,14 @@ export function ConersationClientPage() {
                                                 loading: "Analysing...",
                                                 success: (data: RizzAnalysis) => {
                                                     console.log(data);
+        
+                                                    if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
+                                                        throw new Error("Invalid response from GPT-4o");
+                                                    }
+        
                                                     localStorage.setItem("analysis", JSON.stringify(data));
                     
                                                     router.push("/analysis");
-
                                                     localStorage.removeItem("created.convo");
                                                     return "Conversation analysed successfully!";
                                                 },
@@ -320,6 +324,11 @@ export function ConersationClientPage() {
                                         loading: "Analysing...",
                                         success: (data: RizzAnalysis) => {
                                             console.log(data);
+
+                                            if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
+                                                throw new Error("Invalid response from GPT-4o");
+                                            }
+
                                             localStorage.setItem("analysis", JSON.stringify(data));
             
                                             router.push("/analysis");
