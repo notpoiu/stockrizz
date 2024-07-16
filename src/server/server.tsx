@@ -9,8 +9,8 @@ const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
     from: z.enum(["from_usr", "to_usr"]),
     rating: z.number(),
-    analysis: z.enum(["great_find", "good", "missed_win", "blunder", "mistake", "brilliant", "inaccuracy", "incorrect", "correct", "best", "book", "excellent", "forced"]),
-    analysis_reason: z.string(),
+    analyisis: z.enum(["great_find", "good", "missed_win", "blunder", "mistake", "brilliant", "inaccuracy", "incorrect", "correct", "best", "book", "excellent", "forced"]),
+    analyisis_reason: z.string(),
     example_best_move: z.string()
 });
 
