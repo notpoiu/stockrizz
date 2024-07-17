@@ -22,10 +22,21 @@ import {
     SelectValue,
 } from "@/components/ui/select"
   
+import {
+    Drawer,
+    DrawerClose,
+    DrawerContent,
+    DrawerDescription,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerTitle,
+    DrawerTrigger,
+} from "@/components/ui/drawer"
+  
 
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import { RawTextBubble, TextBubbleColors } from "./message-gen-component";
+import { RawTextBubble } from "./message-gen-component";
 import { Label } from "./ui/label";
 
 import { message, RizzAnalysis } from "../server/types";
@@ -36,9 +47,8 @@ import { AnalyseConversation } from "@/server/server";
 
 import { useRouter } from "next/navigation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { BarChart2Icon, EditIcon, HomeIcon, MoreHorizontalIcon, OptionIcon, SettingsIcon, TrashIcon } from "lucide-react";
+import { EditIcon, HomeIcon, MoreHorizontalIcon, SettingsIcon, TrashIcon } from "lucide-react";
 
-import Image from "next/image";
 import Link from "next/link";
 
 const msgSchema = z.object({
@@ -46,12 +56,232 @@ const msgSchema = z.object({
     from: z.enum(["to_usr", "from_usr"]),
 });
 
-export function ConersationClientPage() {
-    const router = useRouter();
-
+function ConversationCreationActions({ messages, setMessages, is_for_mobile }: { messages: message[] | null, setMessages: (messages: message[] | null) => void, is_for_mobile?: boolean }) {
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const [from, setFrom] = useState<"from_usr" | "to_usr">("from_usr");
     const [message, setMessage] = useState<string>("Hello, how are you?");
+    const router = useRouter();
+    
+    const reset_alert_options = () => {
+        setMessage("Hello, how are you?");
+        setFrom("from_usr");
+    }
+
+    return (
+        <>
+            <Link href="/">
+                <Button variant={"outline"} className={is_for_mobile ? "" : "max-md:hidden mr-2"}>
+                    {is_for_mobile ? "Go back to main page" : ""}<HomeIcon className={`w-[24px] h-[24px] stroke-black ${is_for_mobile ? "ml-2" : ""}`} />
+                </Button>
+            </Link>
+
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button disabled={isOpen} className={is_for_mobile ? "" : "max-md:hidden mr-2"}>
+                        Analyse
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are there any modifications you want to do? This action is irreversible.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => {
+                            toast.promise(AnalyseConversation(messages as message[]), {
+                                loading: "Analysing...",
+                                success: (data: RizzAnalysis) => {
+                                    console.log(data);
+
+                                    if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
+                                        throw new Error("Invalid response from GPT-4o");
+                                    }
+
+                                    localStorage.setItem("analysis", JSON.stringify(data));
+
+                                    router.push("/analysis");
+                                    localStorage.removeItem("created.convo");
+                                    return "Conversation analysed successfully!";
+                                },
+                                error: "Failed to analyse"    
+                            })
+                        }}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog onOpenChange={(open) => {setIsOpen(open)}}>
+                <AlertDialogTrigger asChild>
+                    <Button disabled={isOpen} className={is_for_mobile ? "" : "max-md:hidden"}>
+                        Create Text Message
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Text Creation</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This creates a message, a preview is shown below
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    
+                    <div className="mt-2" />
+                    
+                    <RawTextBubble message={message} from={from} />
+                    
+                    <div className="grid w-full gap-1.5 mt-3">
+                        <Label htmlFor="message">Your message</Label>
+                        <Textarea placeholder="Type your message here."  onChange={(event) => { setMessage(event.target.value); }} />
+                    </div>
+
+                    <AlertDialogFooter>
+                        <Select onValueChange={(value) => {
+                            // @ts-ignore
+                            setFrom(value)
+                        }}>
+                            <SelectTrigger className="md:mr-auto max-sm:mt-2">
+                                <SelectValue placeholder="Coming from..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="from_usr">From you</SelectItem>
+                                <SelectItem value="to_usr">From them</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <AlertDialogCancel onClick={reset_alert_options}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => {
+                            setMessages([...messages as message[], {message, from}]);
+                            reset_alert_options();
+                        }}>Create</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
+    )
+}
+
+function ConversationEditActions({ messages, setMessages, index, message, is_for_mobile }: { messages: message[] | null, setMessages: (messages: message[] | null) => void, index: number, message: message, is_for_mobile?: boolean }) {
+    const [edit_message, setEditMessage] = useState<string>("");
+    const [edit_from, setEditFrom] = useState<"from_usr" | "to_usr">("from_usr");
+    
+    function reset_alert_options() {
+        setEditMessage("");
+        setEditFrom("from_usr");
+    }
+    
+    return (
+        <>
+            {!is_for_mobile && (
+                <>
+                    <div className="flex flex-row *:mr-2 capitalize font-bold">
+                        <SettingsIcon className="w-[24px] h-[24px] mr-2" />
+                        <p>Options</p>
+                    </div>
+                    <DropdownMenuSeparator />
+                </>
+            )}
+
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button variant="destructive" className={is_for_mobile ? "" : "w-full"}>
+                        <TrashIcon className="w-[24px] h-[24px] mr-2" />
+                        Delete Message
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you absolutely sure? This action is irreversible.
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => {
+                            if (messages === null) {
+                                return;
+                            }
+
+                            const new_messages = messages.filter((msg, i) => i !== index);
+                            setMessages(new_messages);
+                            localStorage.setItem("created.convo", JSON.stringify(new_messages));
+                        }}>Continue</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button className={is_for_mobile ? "" : "w-full mt-2"} onClick={() => {
+                        if (messages === null) {
+                            return;
+                        }
+
+                        setEditMessage(message.message);
+                        setEditFrom(message.from);
+                    }}>
+                        <EditIcon className="w-[24px] h-[24px] mr-2" />
+                        Edit Message
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>Edit Text</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            This exits a message, a preview is shown below
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    
+                    <div className="mt-2" />
+                    
+                    <RawTextBubble message={edit_message} from={edit_from} />
+                    
+                    <div className="grid w-full gap-1.5 mt-3">
+                        <Label htmlFor="message">Your message</Label>
+                        <Textarea placeholder="Type your message here."  onChange={(event) => { setEditMessage(event.target.value); }} />
+                    </div>
+
+                    <AlertDialogFooter>
+                        <Select onValueChange={(value) => {
+                            // @ts-ignore
+                            setEditFrom(value)
+                        }}>
+                            <SelectTrigger className="md:mr-auto max-sm:mt-2">
+                                <SelectValue placeholder="Coming from..." />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="from_usr">From you</SelectItem>
+                                <SelectItem value="to_usr">From them</SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <AlertDialogCancel onClick={reset_alert_options}>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => {
+                            if (messages === null) {
+                                return;
+                            }
+
+                            const new_messages = messages.map((msg, i) => {
+                                if (i === index) {
+                                    return {message: edit_message, from: edit_from};
+                                }
+
+                                return msg;
+                            });
+
+                            setMessages(new_messages);
+
+                            reset_alert_options();
+                        }}>Save</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+
+        </>
+    )
+}
+
+export function ConersationClientPage() {
     const [messages, setMessages] = useState<message[] | null>(null);
 
     const [edit_message, setEditMessage] = useState<string>("");
@@ -75,14 +305,14 @@ export function ConersationClientPage() {
         }
 
         if (!is_not_null) {
-            setMessages([]);
+            setMessages([
+                {message: "Hello, how are you?", from: "from_usr"},
+                {message: "I'm doing well, thank you.", from: "to_usr"}
+            ]);
         }
     }, []);
 
     function reset_alert_options() {
-        setMessage("Hello, how are you?");
-        setFrom("from_usr");
-
         setEditMessage("");
         setEditFrom("from_usr");
     }
@@ -95,303 +325,61 @@ export function ConersationClientPage() {
                 {messages && messages.map((message, index) => (
                     <RawTextBubble message={message.message} from={message.from} key={index}>
                         <DropdownMenu>
-                            <DropdownMenuTrigger className={`absolute ${from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
+                            <DropdownMenuTrigger className={`absolute max-md:hidden ${message.from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
                                 <SettingsIcon className="w-[24px] h-[24px] stroke-black" />
                             </DropdownMenuTrigger>
 
                             <DropdownMenuContent className="px-2 py-2 max-w-[250px]">
-                                <div className="flex flex-row *:mr-2 capitalize font-bold">
-                                    <SettingsIcon className="w-[24px] h-[24px] mr-2" />
-                                    <p>Options</p>
-                                </div>
-                                <DropdownMenuSeparator />
-
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <Button variant="destructive" className="w-full">
-                                            <TrashIcon className="w-[24px] h-[24px] mr-2" />
-                                            Delete Message
-                                        </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                Are you absolutely sure? This action is irreversible.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction onClick={() => {
-                                                const new_messages = messages.filter((msg, i) => i !== index);
-                                                setMessages(new_messages);
-                                                localStorage.setItem("created.convo", JSON.stringify(new_messages));
-                                            }}>Continue</AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-
-                                <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                        <Button className="w-full mt-2" onClick={() => {
-                                            setEditMessage(message.message);
-                                            setEditFrom(message.from);
-                                        }}>
-                                            <EditIcon className="w-[24px] h-[24px] mr-2" />
-                                            Edit Message
-                                        </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle>Edit Text</AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                This exits a message, a preview is shown below
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        
-                                        <div className="mt-2" />
-                                        
-                                        <RawTextBubble message={edit_message} from={edit_from} />
-                                        
-                                        <div className="grid w-full gap-1.5 mt-3">
-                                            <Label htmlFor="message">Your message</Label>
-                                            <Textarea placeholder="Type your message here."  onChange={(event) => { setEditMessage(event.target.value); }} />
-                                        </div>
-
-                                        <AlertDialogFooter>
-                                            <Select onValueChange={(value) => {
-                                                // @ts-ignore
-                                                setEditFrom(value)
-                                            }}>
-                                                <SelectTrigger className="md:mr-auto max-sm:mt-2">
-                                                    <SelectValue placeholder="Coming from..." />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="from_usr">From you</SelectItem>
-                                                    <SelectItem value="to_usr">From them</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                            <AlertDialogCancel onClick={reset_alert_options}>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction onClick={() => {
-                                                const new_messages = messages.map((msg, i) => {
-                                                    if (i === index) {
-                                                        return {message: edit_message, from: edit_from};
-                                                    }
-
-                                                    return msg;
-                                                });
-
-                                                setMessages(new_messages);
-
-                                                reset_alert_options();
-                                            }}>Save</AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
-
+                                <ConversationEditActions messages={messages} setMessages={setMessages} index={index} message={message} />
                             </DropdownMenuContent>
                         </DropdownMenu>
+
+                        <Drawer>
+                            <DrawerTrigger className={`absolute hidden max-md:block ${message.from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
+                                <SettingsIcon className="w-[24px] h-[24px] stroke-black" />
+                            </DrawerTrigger>
+
+                            <DrawerContent>
+                                <DrawerHeader>
+                                    <DrawerTitle>Message</DrawerTitle>
+                                    <DrawerDescription>Message details</DrawerDescription>
+                                </DrawerHeader>
+                                
+                                <div className="w-full flex flex-row *:mr-2 justify-center items-center mb-5">
+                                    <ConversationEditActions messages={messages} setMessages={setMessages} index={index} message={message} is_for_mobile={true} />
+                                </div>
+                            </DrawerContent>
+                        </Drawer>
                     </RawTextBubble>
                 ))}
             </div>
 
             <footer className="fixed bottom-2 mb-3 w-[calc(100%-2rem-2rem)] flex flex-row justify-center items-center border-t py-2">
-
                 <div className="flex flex-col">
                     <h1>Conversation Generator</h1>
                     <p className="text-sm">Generate a conversation</p>
                 </div>
 
                 <div className="ml-auto flex-row flex justify-center items-center max-md:flex-col">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
+                    <Drawer>
+                        <DrawerTrigger asChild>
                             <Button variant={"outline"} className="max-md:block hidden">
                                 <MoreHorizontalIcon className="w-[24px] h-[24px] stroke-black" />
                             </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="flex flex-col">
-                            <Link href="/">
-                                <Button variant={"outline"} className="mb-2 w-full">
-                                    <HomeIcon className="w-[24px] h-[24px] stroke-black" />
-                                </Button>
-                            </Link>
+                        </DrawerTrigger>
+                        <DrawerContent>
+                            <DrawerHeader>
+                                <DrawerTitle>Actions</DrawerTitle>
+                                <DrawerDescription>This menu shows most actions you may need to use</DrawerDescription>
+                            </DrawerHeader>
 
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <Button disabled={isOpen} className="mb-2">
-                                        Analyse
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            Are there any modifications you want to do? This action is irreversible.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={() => {
-                                            toast.promise(AnalyseConversation(messages as message[]), {
-                                                loading: "Analysing...",
-                                                success: (data: RizzAnalysis) => {
-                                                    console.log(data);
-        
-                                                    if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
-                                                        throw new Error("Invalid response from GPT-4o");
-                                                    }
-        
-                                                    localStorage.setItem("analysis", JSON.stringify(data));
-                    
-                                                    router.push("/analysis");
-                                                    localStorage.removeItem("created.convo");
-                                                    return "Conversation analysed successfully!";
-                                                },
-                                                error: "Failed to analyse"    
-                                            })
-                                        }}>Continue</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-
-                            <AlertDialog onOpenChange={(open) => {setIsOpen(open)}}>
-                                <AlertDialogTrigger asChild>
-                                    <Button disabled={isOpen} className="">
-                                        Create Text Message
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Text Creation</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This creates a message, a preview is shown below
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    
-                                    <div className="mt-2" />
-                                    
-                                    <RawTextBubble message={message} from={from} />
-                                    
-                                    <div className="grid w-full gap-1.5 mt-3">
-                                        <Label htmlFor="message">Your message</Label>
-                                        <Textarea placeholder="Type your message here."  onChange={(event) => { setMessage(event.target.value); }} />
-                                    </div>
-
-                                    <AlertDialogFooter>
-                                        <Select onValueChange={(value) => {
-                                            // @ts-ignore
-                                            setFrom(value)
-                                        }}>
-                                            <SelectTrigger className="md:mr-auto max-sm:mt-2">
-                                                <SelectValue placeholder="Coming from..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="from_usr">From you</SelectItem>
-                                                <SelectItem value="to_usr">From them</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                        <AlertDialogCancel onClick={reset_alert_options}>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction onClick={() => {
-                                            setMessages([...messages as message[], {message, from}]);
-                                            reset_alert_options();
-                                        }}>Create</AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <Link href="/">
-                        <Button variant={"outline"} className="mr-2 max-md:hidden">
-                            <HomeIcon className="w-[24px] h-[24px] stroke-black" />
-                        </Button>
-                    </Link>
-
-                    <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                            <Button disabled={isOpen} className="mr-2 max-md:hidden">
-                                Analyse
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    Are there any modifications you want to do? This action is irreversible.
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => {
-                                    toast.promise(AnalyseConversation(messages as message[]), {
-                                        loading: "Analysing...",
-                                        success: (data: RizzAnalysis) => {
-                                            console.log(data);
-
-                                            if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
-                                                throw new Error("Invalid response from GPT-4o");
-                                            }
-
-                                            localStorage.setItem("analysis", JSON.stringify(data));
-            
-                                            router.push("/analysis");
-                                            localStorage.removeItem("created.convo");
-                                            return "Conversation analysed successfully!";
-                                        },
-                                        error: "Failed to analyse"    
-                                    })
-                                }}>Continue</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-
-                    <AlertDialog onOpenChange={(open) => {setIsOpen(open)}}>
-                        <AlertDialogTrigger asChild>
-                            <Button disabled={isOpen} className="max-md:hidden">
-                                Create Text Message
-                            </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle>Text Creation</AlertDialogTitle>
-                                <AlertDialogDescription>
-                                    This creates a message, a preview is shown below
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            
-                            <div className="mt-2" />
-                            
-                            <RawTextBubble message={message} from={from} />
-                            
-                            <div className="grid w-full gap-1.5 mt-3">
-                                <Label htmlFor="message">Your message</Label>
-                                <Textarea placeholder="Type your message here."  onChange={(event) => { setMessage(event.target.value); }} />
+                            <div className="flex flex-row container w-full *:mr-2 justify-center items-center mb-5">
+                                <ConversationCreationActions messages={messages} setMessages={setMessages} is_for_mobile={true} />
                             </div>
+                       </DrawerContent>
+                    </Drawer>
 
-                            <AlertDialogFooter>
-                                <Select onValueChange={(value) => {
-                                    // @ts-ignore
-                                    setFrom(value)
-                                }}>
-                                    <SelectTrigger className="md:mr-auto max-sm:mt-2">
-                                        <SelectValue placeholder="Coming from..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="from_usr">From you</SelectItem>
-                                        <SelectItem value="to_usr">From them</SelectItem>
-                                    </SelectContent>
-                                </Select>
-                                <AlertDialogCancel onClick={reset_alert_options}>Cancel</AlertDialogCancel>
-                                <AlertDialogAction onClick={() => {
-                                    setMessages([...messages as message[], {message, from}]);
-                                    reset_alert_options();
-                                }}>Create</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
-                    
-
-                    
+                    <ConversationCreationActions messages={messages} setMessages={setMessages} />
                 </div>
             </footer>
         </main>
