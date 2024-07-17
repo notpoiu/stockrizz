@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="fixed bottom-2 w-screen">
+      <div className="fixed bottom-2 w-screen mb-3">
         <div className="flex justify-center items-center flex-row">
 
           <p className="text-xs text-muted-foreground">Made with ❤️ by notpoiu</p>
