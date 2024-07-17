@@ -195,7 +195,7 @@ export function ConersationClientPage() {
                 ))}
             </div>
 
-            <footer className="fixed bottom-0 w-[calc(100%-2rem-2rem)] mb-2 flex flex-col border-t py-2">
+            <footer className="fixed bottom-2 mb-3 w-[calc(100%-2rem-2rem)] mb-2 flex flex-col border-t py-2">
                 <h1>Conversation Generator</h1>
                 <p className="text-sm">Generate a conversation</p>
 
