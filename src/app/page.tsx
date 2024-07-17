@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className="flex flex-col justify-center items-center w-screen h-screen">
+    <main className="flex flex-col justify-center items-center w-screen h-screen container">
       <div className="flex flex-row">
         <h1 className="text-3xl">Stockrizz</h1>
         <Link href="/about">
