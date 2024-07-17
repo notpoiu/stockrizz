@@ -199,7 +199,7 @@ export function ConersationClientPage() {
                 <h1>Conversation Generator</h1>
                 <p className="text-sm">Generate a conversation</p>
 
-                <div className="fixed bottom-0 mb-4 right-[32px] flex-row max-md:flex-col">
+                <div className="fixed bottom-2 mb-3 right-[32px] flex-row max-md:flex-col">
                     
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
