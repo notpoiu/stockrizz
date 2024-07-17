@@ -148,10 +148,8 @@ export async function AnalyseConversation(messages: message[]) {
     return result;
 }
 
-const github_data = {
-    owner: process.env.GITHUB_REPO_OWNER,
-    repo: process.env.GITHUB_REPO_NAME,
-}
+const owner = process.env.GITHUB_REPO_OWNER || "notpoiu";
+const repo = process.env.GITHUB_REPO_NAME || "test_database";
 
 const octokit = new Octokit({
     auth: process.env.GITHUB_TOKEN,
@@ -186,8 +184,8 @@ export async function ShareConversation(result: RizzAnalysis) {
     const id = GenerateConversationID(getRandomArbitrary(5, 8));
 
     const params = {
-        owner: github_data.owner,
-        repo: github_data.repo,
+        owner: owner,
+        repo: repo,
         path: `conversations/${id}.json`,
         message: 'Conversation Analysis Share',
         content: contentBase64,
@@ -204,8 +202,8 @@ export async function GetConversation(id: string) {
     }
 
     const params = {
-        owner: github_data.owner,
-        repo: github_data.repo,
+        owner: owner,
+        repo: repo,
         path: `conversations/${id}.json`,
     };
 
