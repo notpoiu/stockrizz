@@ -71,7 +71,7 @@ function ConversationCreationActions({ messages, setMessages, is_for_mobile }: {
         <>
             <Link href="/">
                 <Button variant={"outline"} className={is_for_mobile ? "" : "max-md:hidden mr-2"}>
-                    {is_for_mobile ? "Go back to main page" : ""}<HomeIcon className={`w-[24px] h-[24px] stroke-black ${is_for_mobile ? "ml-2" : ""}`} />
+                    {is_for_mobile ? "Back to" : ""}<HomeIcon className={`w-[24px] h-[24px] stroke-black ${is_for_mobile ? "ml-2" : ""}`} />
                 </Button>
             </Link>
 
