@@ -36,7 +36,7 @@ import { AnalyseConversation } from "@/server/server";
 
 import { useRouter } from "next/navigation";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { BarChart2Icon, EditIcon, MoreHorizontalIcon, OptionIcon, SettingsIcon, TrashIcon } from "lucide-react";
+import { BarChart2Icon, EditIcon, HomeIcon, MoreHorizontalIcon, OptionIcon, SettingsIcon, TrashIcon } from "lucide-react";
 
 import Image from "next/image";
 import Link from "next/link";
@@ -195,22 +195,24 @@ export function ConersationClientPage() {
                 ))}
             </div>
 
-            <footer className="fixed bottom-2 mb-3 w-[calc(100%-2rem-2rem)] mb-2 flex flex-col border-t py-2">
-                <h1>Conversation Generator</h1>
-                <p className="text-sm">Generate a conversation</p>
+            <footer className="fixed bottom-2 mb-3 w-[calc(100%-2rem-2rem)] flex flex-row justify-center items-center border-t py-2">
 
-                <div className="fixed bottom-2 mb-3 right-[32px] flex-row max-md:flex-col">
-                    
+                <div className="flex flex-col">
+                    <h1>Conversation Generator</h1>
+                    <p className="text-sm">Generate a conversation</p>
+                </div>
+
+                <div className="ml-auto flex-row flex justify-center items-center max-md:flex-col">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant={"outline"} className="fixed bottom-2 mb-3 max-md:block hidden">
+                            <Button variant={"outline"} className="max-md:block hidden">
                                 <MoreHorizontalIcon className="w-[24px] h-[24px] stroke-black" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="flex flex-col">
                             <Link href="/">
                                 <Button variant={"outline"} className="mb-2 w-full">
-                                    Go Back
+                                    <HomeIcon className="w-[24px] h-[24px] stroke-black" />
                                 </Button>
                             </Link>
 
@@ -301,7 +303,7 @@ export function ConersationClientPage() {
 
                     <Link href="/">
                         <Button variant={"outline"} className="mr-2 max-md:hidden">
-                            Go Back
+                            <HomeIcon className="w-[24px] h-[24px] stroke-black" />
                         </Button>
                     </Link>
 
