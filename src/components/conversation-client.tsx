@@ -203,7 +203,7 @@ export function ConersationClientPage() {
                     
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant={"outline"} className="max-md:block hidden">
+                            <Button variant={"outline"} className="fixed bottom-2 mb-3 max-md:block hidden">
                                 <MoreHorizontalIcon className="w-[24px] h-[24px] stroke-black" />
                             </Button>
                         </DropdownMenuTrigger>
