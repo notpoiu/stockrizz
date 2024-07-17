@@ -149,8 +149,8 @@ export async function AnalyseConversation(messages: message[]) {
 }
 
 const github_data = {
-    owner: "notpoiu",
-    repo: "test_database",
+    owner: process.env.GITHUB_REPO_OWNER,
+    repo: process.env.GITHUB_REPO_NAME,
 }
 
 const octokit = new Octokit({
