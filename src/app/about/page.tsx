@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function AboutPage() {
     return (
-        <main className="flex flex-col justify-center items-center w-screen h-screen">
+        <main className="flex flex-col justify-center items-center w-screen h-screen container">
             <div className="max-w-[500px]">
                 <h1 className="text-3xl">About</h1>
                 <p className="mb-2">Stockrizz is the best rizz engine</p>
