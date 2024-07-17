@@ -8,12 +8,23 @@ Took inspiration from [this tiktok](https://vm.tiktok.com/ZMrBfDyP9/) and though
 
 ## Setup
 
-First, get your [openai api key](https://platform.openai.com/api-keys) and then create a new environement file (ex: `.env.local`).
+First, get your [openai api key](https://platform.openai.com/api-keys).
+Then, get your [github api key](https://github.com/settings/tokens?type=beta) (set the "Contents" permission in repository permissions as "Read and write"). NOTE THAT CLASSIC TOKENS WILL ALSO WORK.
 
+Then create a new repository on github and get the owner and the name of the repository.
+
+After the creation of the repository, clone the stockrizz repository and navigate to the root of the project.
+
+
+Then create a new environement file (ex: `.env.local`).
 Then put this in your environement file
 
 ```env
 OPENAI_API_KEY=sk-...
+GITHUB_TOKEN=github_pat_...
+
+GITHUB_REPO_OWNER=...
+GITHUB_REPO_NAME=...
 ```
 
 Then install all the dependencies using the following commands:
@@ -43,6 +54,10 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Deployment
+I recommend deploying on vercel. Press the button bellow to deploy:
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/project?template=https://github.com/notpoiu/stockrizz)
 
 ## Contributing
 
