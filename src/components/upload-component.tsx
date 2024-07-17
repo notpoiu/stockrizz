@@ -26,7 +26,7 @@ export function UploadComponent() {
             <div>
                 {!file ? (
                     <div
-                        className="flex flex-col px-2 py-2 items-center justify-center w-full h-full border-4 border-dashed border-gray-300 rounded-lg min-w-[36rem]"
+                        className="flex flex-col px-20 py-2 items-center justify-center w-full h-full border-4 border-dashed border-gray-300 rounded-lg"
                         onDrop={(e) => {
                             e.preventDefault();
                             setFileEnter(false);
