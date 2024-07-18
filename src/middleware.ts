@@ -9,9 +9,9 @@ export async function middleware(request: NextRequest) {
 
     const url = request.nextUrl.pathname;
 
-    for (const [key, value] of Object.entries(depricated_urls)) {
-        if (url.startsWith(key)) {
-            return NextResponse.redirect(value);
+    for (const [depricated_url, new_url] of Object.entries(depricated_urls)) {
+        if (url.startsWith(depricated_url)) {
+            return NextResponse.redirect(url.replace(depricated_url, new_url));
         }
     }
     
