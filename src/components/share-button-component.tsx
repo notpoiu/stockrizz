@@ -33,7 +33,7 @@ export function ShareButton({className, variant}: {className?: string, variant?:
     
             ShareConversation(data).then((id) => {
                 
-                const url = `${window.location.origin}/shared/${id}`
+                const url = `${window.location.origin}/conversation/analysis/${id}`
                 setUrlString(url)
                 
                 navigator.clipboard.writeText(url)

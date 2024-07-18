@@ -19,7 +19,7 @@ export default function Home() {
         <UploadComponent />
         <div className="flex flex-row justify-center items-center mt-3">
           Or create a conversation here:
-          <Link href="/create/conversation" className="ml-2">
+          <Link href="/conversation/create" className="ml-2">
             <Button variant={"outline"}>Create Conversation</Button>
           </Link>
         </div>

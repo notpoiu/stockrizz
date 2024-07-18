@@ -94,7 +94,7 @@ function ConversationCreationActions({ messages, setMessages, is_for_mobile }: {
                             toast.promise(AnalyseConversation(messages as message[]), {
                                 loading: "Analysing...",
                                 success: (slug: string) => {
-                                    router.push("/shared/" + slug);
+                                    router.push(`/conversation/analysis/${slug}`);
                                     localStorage.removeItem("created.convo");
                                     return "Conversation analysed successfully!";
                                 },

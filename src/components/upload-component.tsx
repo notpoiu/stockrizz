@@ -106,7 +106,7 @@ export function UploadComponent() {
                         toast.promise(AnalyseImage(base64), {
                             loading: "Analysing...",
                             success: (slug: string) => {
-                                router.push(`/shared/${slug}`);
+                                router.push(`/conversation/analysis/${slug}`);
                                 return "Image analysed successfully!";
                             },
                             error: "Failed to analyse image"
