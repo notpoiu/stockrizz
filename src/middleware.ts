@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 const depricated_urls = {
     '/create/conversation': '/conversation/create',
     '/shared/': '/conversation/analysis/',
+    '/analysis/': '/conversation/analysis/',
 }
 
 export async function middleware(request: NextRequest) {

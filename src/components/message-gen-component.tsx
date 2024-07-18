@@ -5,7 +5,6 @@ import Image from "next/image";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import React from "react";
 import { BarChart2Icon } from "lucide-react";
-import { useMessageData } from "./message-data-provider";
 
 export const TextBubbleColors = {
     "to_usr": "#e5e5ea",
@@ -76,19 +75,6 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
-        </div>
-    )
-}
-
-export function IMessageComponent() {
-    const { data, exists } = useMessageData();
-    
-    return (
-        <div className="flex flex-col px-2 py-2 w-[40vw] *:mb-4">
-            {!exists && <p className="text-center text-gray-500">No analysis data found</p>}
-            {exists && data.analysis.map((message, index) => {
-                return <TextBubble message={message} from={message.from} key={index} /> 
-            })}
         </div>
     )
 }

@@ -1,4 +1,4 @@
-import { ConersationClientPage } from "@/components/conversation-client"
+import { ConersationClientPage } from "@/components/conversation-creation-client"
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
