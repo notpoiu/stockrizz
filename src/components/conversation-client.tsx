@@ -93,16 +93,8 @@ function ConversationCreationActions({ messages, setMessages, is_for_mobile }: {
                         <AlertDialogAction onClick={() => {
                             toast.promise(AnalyseConversation(messages as message[]), {
                                 loading: "Analysing...",
-                                success: (data: RizzAnalysis) => {
-                                    console.log(data);
-
-                                    if ((data as unknown) as string == "undefined" || (data as unknown) as string == "null") {
-                                        throw new Error("Invalid response from GPT-4o");
-                                    }
-
-                                    localStorage.setItem("analysis", JSON.stringify(data));
-
-                                    router.push("/analysis");
+                                success: (slug: string) => {
+                                    router.push("/shared/" + slug);
                                     localStorage.removeItem("created.convo");
                                     return "Conversation analysed successfully!";
                                 },

@@ -105,12 +105,8 @@ export function UploadComponent() {
                         const base64 = reader.result as string;
                         toast.promise(AnalyseImage(base64), {
                             loading: "Analysing...",
-                            success: (data: RizzAnalysis) => {
-                                console.log(data);
-                                localStorage.setItem("image", base64);
-                                localStorage.setItem("analysis", JSON.stringify(data));
-
-                                router.push("/analysis");
+                            success: (slug: string) => {
+                                router.push(`/shared/${slug}`);
                                 return "Image analysed successfully!";
                             },
                             error: "Failed to analyse image"

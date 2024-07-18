@@ -129,7 +129,8 @@ export async function AnalyseImage(img_b64: string) {
         }
     ]);
 
-    return result;
+    const id = await ShareConversation(result);
+    return id;
 }
 
 export async function AnalyseConversation(messages: message[]) {
@@ -145,7 +146,8 @@ export async function AnalyseConversation(messages: message[]) {
         }
     ]);
 
-    return result;
+    const id = await ShareConversation(result);
+    return id;
 }
 
 const owner = process.env.GITHUB_REPO_OWNER || "notpoiu";
