@@ -37,6 +37,13 @@ export function RawTextBubble({message,from, key, children}: {message: string, f
 }
 
 export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, from: "to_usr" | "from_usr", key?: number}) {
+    
+    // For depricated database entries
+    // @ts-ignore
+    const analysis_icon = message.analysis || message.analyisis;
+    // @ts-ignore
+    const analysis_message = message.analysis_reason || message.analyisis_reason;
+
     return (
         <div className={`flex ${from == "to_usr" ? "justify-start" : "justify-end"}`} key={key}>
             <div className={`px-3 py-2 relative ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"}`} style={{"background": TextBubbleColors[from]}}>
@@ -45,12 +52,12 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
 
                 <DropdownMenu>
                     <DropdownMenuTrigger className={`absolute ${from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
-                        <Image src={`/icons/${message.analysis}.svg`} alt={message.analysis} width={24} height={24} />
+                        <Image src={`/icons/${analysis_icon}.svg`} alt={analysis_icon} width={24} height={24} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="px-2 py-2 max-w-[250px]">
                         <div className="flex flex-row *:mr-2 capitalize font-bold">
-                            <Image src={`/icons/${message.analysis}.svg`} alt={message.analysis} width={24} height={24} />
-                            <p>{message.analysis}</p>
+                            <Image src={`/icons/${analysis_icon}.svg`} alt={analysis_icon} width={24} height={24} />
+                            <p>{analysis_icon}</p>
                             <div className="flex flex-row ml-auto">
                                 <BarChart2Icon />
                                 <span className="font-semibold">{message.rating}</span>
@@ -58,7 +65,7 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
                         </div>
                         <DropdownMenuSeparator />
                         
-                        <p>{message.analysis_reason}</p>
+                        <p>{analysis_message}</p>
 
                         <div className="flex flex-row *:mr-2 font-semibold mt-3">
                             <p>Alternative</p>
