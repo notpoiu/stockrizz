@@ -4,8 +4,8 @@ export interface RizzAnalysisMessage {
 
     rating: number;
 
-    analyisis: "great_find" | "good" | "missed_win" | "blunder" | "mistake" | "brilliant" | "inaccuracy" | "incorrect" | "correct" | "best" | "book" | "excellent" | "forced"
-    analyisis_reason: string;
+    analysis: "great_find" | "good" | "missed_win" | "blunder" | "mistake" | "brilliant" | "inaccuracy" | "incorrect" | "correct" | "best" | "book" | "excellent" | "forced"
+    analysis_reason: string;
 
     example_best_move: string;
 }

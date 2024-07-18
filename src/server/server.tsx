@@ -12,8 +12,8 @@ const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
     from: z.enum(["from_usr", "to_usr"]),
     rating: z.number(),
-    analyisis: z.enum(["great_find", "good", "missed_win", "blunder", "mistake", "brilliant", "inaccuracy", "incorrect", "correct", "best", "book", "excellent", "forced"]),
-    analyisis_reason: z.string(),
+    analysis: z.enum(["great_find", "good", "missed_win", "blunder", "mistake", "brilliant", "inaccuracy", "incorrect", "correct", "best", "book", "excellent", "forced"]),
+    analysis_reason: z.string(),
     example_best_move: z.string()
 });
 
@@ -42,15 +42,15 @@ if the image has no text bubble that shows whos the user assume that the one try
 
 for the example best move you should give a alternative phrase they could have used (try and match the way the person types)
 
-You need to respond ONLY via a RAW JSON response this means NO markdown in the response. It should be structed to follow the RizzAnalyisis typescript interface:
+You need to respond ONLY via a RAW JSON response this means NO markdown in the response. It should be structed to follow the Rizzanalysis typescript interface:
 export interface RizzAnalysisMessage {
     message: string;
     from: "from_usr" | "to_usr";
 
     rating: number;
 
-    analyisis: "great_find" | "good" | "missed_win" | "blunder" | "mistake" | "brilliant" | "inaccuracy" | "incorrect" | "correct" | "best" | "book" | "excellent" | "forced"
-    analyisis_reason: string;
+    analysis: "great_find" | "good" | "missed_win" | "blunder" | "mistake" | "brilliant" | "inaccuracy" | "incorrect" | "correct" | "best" | "book" | "excellent" | "forced"
+    analysis_reason: string;
 
     example_best_move: string;
 }

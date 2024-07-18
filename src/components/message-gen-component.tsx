@@ -45,12 +45,12 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
 
                 <DropdownMenu>
                     <DropdownMenuTrigger className={`absolute ${from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
-                        <Image src={`/icons/${message.analyisis}.svg`} alt={message.analyisis} width={24} height={24} />
+                        <Image src={`/icons/${message.analysis}.svg`} alt={message.analysis} width={24} height={24} />
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="px-2 py-2 max-w-[250px]">
                         <div className="flex flex-row *:mr-2 capitalize font-bold">
-                            <Image src={`/icons/${message.analyisis}.svg`} alt={message.analyisis} width={24} height={24} />
-                            <p>{message.analyisis}</p>
+                            <Image src={`/icons/${message.analysis}.svg`} alt={message.analysis} width={24} height={24} />
+                            <p>{message.analysis}</p>
                             <div className="flex flex-row ml-auto">
                                 <BarChart2Icon />
                                 <span className="font-semibold">{message.rating}</span>
@@ -58,7 +58,7 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
                         </div>
                         <DropdownMenuSeparator />
                         
-                        <p>{message.analyisis_reason}</p>
+                        <p>{message.analysis_reason}</p>
 
                         <div className="flex flex-row *:mr-2 font-semibold mt-3">
                             <p>Alternative</p>
