@@ -5,7 +5,6 @@ import { Button } from "./ui/button";
 import { toast } from "sonner";
 import { AnalyseImage } from "@/server/server";
 import { useRouter } from "next/navigation";
-import { RizzAnalysis } from "@/server/types";
 
 export function UploadComponent() {
     const router = useRouter();

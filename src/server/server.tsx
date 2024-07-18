@@ -142,7 +142,7 @@ export async function AnalyseConversation(messages: message[]) {
     const result = await analyse([
         {
             "type": "text",
-            "text": messages.map((msg) => `${msg.from === "from_usr" ? "FROM_USER" : "TO_USER"}: ${msg.message}`).join("\n")
+            "text": JSON.stringify(messages)
         }
     ]);
 
