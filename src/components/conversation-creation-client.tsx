@@ -39,7 +39,9 @@ import { useEffect, useState } from "react";
 import { RawTextBubble } from "./message-gen-component";
 import { Label } from "./ui/label";
 
-import { message, RizzAnalysis } from "../server/types";
+import { message } from "../server/types";
+
+import Image from "next/image";
 
 import { z } from "zod";
 import { toast } from "sonner";
@@ -304,14 +306,14 @@ export function ConersationClientPage() {
         }
     }, []);
 
-    function reset_alert_options() {
-        setEditMessage("");
-        setEditFrom("from_usr");
-    }
-
     return (
         <main className="container">
             <h1 className="text-center text-lg mt-2">Conversation feed</h1>
+
+            {/* Preemptively load images so it dosen't need to load the image while the user is creating a message creating a bugged state where the image is still downloading so it has the wrong image for a few seconds */}
+            {/* Very bad solution and im sorry for people that need accessability :( */}
+            <Image src="/txt_bubble_corner_grey.png" alt="" width={36} height={12} className="fixed bottom-[-100px] opacity-0" />
+            <Image src="/txt_bubble_corner_blue.png" alt="" width={36} height={12} className="fixed bottom-[-100px] opacity-0" />
 
             <div className="flex flex-col gap-2 mt-2">
                 {messages && messages.map((message, index) => (
