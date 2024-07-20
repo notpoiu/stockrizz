@@ -16,7 +16,7 @@ export default function AnalysisClientPage({data, id}: {data: RizzAnalysis | nul
         <main className="mt-5 text-center">
             <h1 className="text-3xl">Analysis</h1>
             <p className="mb-2">Your estimated rizz elo: <span className="font-bold">{data.overall_rating}</span></p>
-            <div className="w-screen flex justify-center items-center">
+            <div className="w-screen flex flex-col justify-center items-center">
                 <p className="mb-3 flex-row flex max-w-[50vw]"><span className="shrink">To get more insight press on the rating icons such as</span><Image src={`/icons/best.svg`} alt={"best"} width={24} height={24} className="ml-2 shrink" /></p>
                 
                 <div className="flex flex-col px-2 py-2 w-[40vw] *:mb-4">
