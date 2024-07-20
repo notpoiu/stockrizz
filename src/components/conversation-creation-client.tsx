@@ -278,9 +278,6 @@ function ConversationEditActions({ messages, setMessages, index, message, is_for
 export function ConersationClientPage() {
     const [messages, setMessages] = useState<message[] | null>(null);
 
-    const [edit_message, setEditMessage] = useState<string>("");
-    const [edit_from, setEditFrom] = useState<"from_usr" | "to_usr">("from_usr");
-
     useEffect(() => {
         if (messages === null) {
             return;
@@ -348,7 +345,7 @@ export function ConersationClientPage() {
                 ))}
             </div>
 
-            <footer className="fixed bottom-2 mb-3 w-[calc(100%-2rem-2rem)] flex flex-row justify-center items-center border-t py-2">
+            <footer className="fixed bottom-2 mb-3 container w-[calc(100%-4rem)] flex flex-row justify-center items-center border-t py-2">
                 <div className="flex flex-col">
                     <h1>Conversation Generator</h1>
                     <p className="text-sm">Generate a conversation</p>
