@@ -25,7 +25,7 @@ function TextWithLineBreaks({text}: {text: string}) {
 
 export function RawTextBubble({message,from, key, children}: {message: string, from: "to_usr" | "from_usr", key?: number, children?: React.ReactNode}) {
     return (
-        <div className={`flex ${from == "to_usr" ? "justify-start text-right" : "justify-end text-left"}`} key={key}>
+        <div className={`flex ${from == "to_usr" ? "justify-start text-left" : "justify-end text-right"}`} key={key}>
             <div className={`px-3 py-2 relative ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"}`} style={{"background": TextBubbleColors[from]}}>
                 <TextWithLineBreaks text={message} />
                 <Image src={`/txt_bubble_corner_${from == "to_usr" ? "grey" : "blue"}.png`} alt="" width={36} height={12} className={`absolute ${from == "to_usr" ? "bottom-[-1px] left-[-9px]" : "bottom-[-1px] right-[-9px]"}`} />
