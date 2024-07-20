@@ -336,7 +336,7 @@ export function ConersationClientPage() {
                                     <DrawerDescription>Message details</DrawerDescription>
                                 </DrawerHeader>
                                 
-                                <div className="w-full flex flex-col *:mb-2 justify-center items-center mb-5">
+                                <div className="w-full flex flex-row *:mr-2 justify-center items-center mb-5">
                                     <ConversationEditActions messages={messages} setMessages={setMessages} index={index} message={message} is_for_mobile={true} />
                                 </div>
                             </DrawerContent>
@@ -364,7 +364,7 @@ export function ConersationClientPage() {
                                 <DrawerDescription>This menu shows most actions you may need to use</DrawerDescription>
                             </DrawerHeader>
 
-                            <div className="flex flex-row container w-full *:mr-2 justify-center items-center mb-5">
+                            <div className="flex flex-col container w-full *:mb-2 justify-center items-center mb-5">
                                 <ConversationCreationActions messages={messages} setMessages={setMessages} is_for_mobile={true} />
                             </div>
                        </DrawerContent>
