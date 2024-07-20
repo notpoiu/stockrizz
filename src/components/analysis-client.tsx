@@ -25,7 +25,7 @@ export default function AnalysisClientPage({data, id}: {data: RizzAnalysis | nul
                     })}
                 </div>
     
-                <Link href="/"><Button>Try for yourself!</Button></Link>
+                <Link href="/"><Button className="mb-5">Try for yourself!</Button></Link>
             </div>
 
 
