@@ -336,7 +336,7 @@ export function ConersationClientPage() {
                                     <DrawerDescription>Message details</DrawerDescription>
                                 </DrawerHeader>
                                 
-                                <div className="w-full flex flex-row *:mr-2 justify-center items-center mb-5">
+                                <div className="w-full flex flex-col *:mb-2 justify-center items-center mb-5">
                                     <ConversationEditActions messages={messages} setMessages={setMessages} index={index} message={message} is_for_mobile={true} />
                                 </div>
                             </DrawerContent>
