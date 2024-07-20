@@ -6,13 +6,8 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="flex flex-col justify-center items-center w-screen h-screen container">
-      <div className="flex flex-row relative">
-        <h1 className="text-3xl">Stockrizz</h1>
-        <Link href="/about" className="absolute top-0 right-[calc(-1.25rem-5px)]">
-          <InfoIcon className="w-5 h-5" />
-        </Link>
-      </div>
-      <p className="mb-5">The best rizz engine</p>
+      <h1 className="text-3xl">Stockrizz</h1>
+      <p className="mb-5">The best rizz engine <Link href="/about"><span className="text-[#38bdf8] underline">(about)</span></Link></p>
       
 
       <div className="flex flex-col justify-center items-center">
