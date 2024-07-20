@@ -25,7 +25,7 @@ function TextWithLineBreaks({text}: {text: string}) {
 
 export function RawTextBubble({message,from, key, children}: {message: string, from: "to_usr" | "from_usr", key?: number, children?: React.ReactNode}) {
     return (
-        <div className={`flex ${from == "to_usr" ? "justify-start" : "justify-end"}`} key={key}>
+        <div className={`flex ${from == "to_usr" ? "justify-start text-right" : "justify-end text-left"}`} key={key}>
             <div className={`px-3 py-2 relative ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"}`} style={{"background": TextBubbleColors[from]}}>
                 <TextWithLineBreaks text={message} />
                 <Image src={`/txt_bubble_corner_${from == "to_usr" ? "grey" : "blue"}.png`} alt="" width={36} height={12} className={`absolute ${from == "to_usr" ? "bottom-[-1px] left-[-9px]" : "bottom-[-1px] right-[-9px]"}`} />
@@ -44,11 +44,7 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
     const analysis_message = message.analysis_reason || message.analyisis_reason;
 
     return (
-        <div className={`flex ${from == "to_usr" ? "justify-start" : "justify-end"}`} key={key}>
-            <div className={`px-3 py-2 relative ${from == "to_usr" ? "rounded-[20px] rounded-bl-[10px] text-black" : "rounded-[20px] rounded-br-[10px] text-white"}`} style={{"background": TextBubbleColors[from]}}>
-                <TextWithLineBreaks text={message.message} />
-                <Image src={`/txt_bubble_corner_${from == "to_usr" ? "grey" : "blue"}.png`} alt="" width={36} height={12} className={`absolute ${from == "to_usr" ? "bottom-[-1px] left-[-9px]" : "bottom-[-1px] right-[-9px]"}`} />
-
+        <RawTextBubble message={message} from={from} key={key}>
                 <DropdownMenu>
                     <DropdownMenuTrigger className={`absolute ${from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
                         <Image src={`/icons/${analysis_icon}.svg`} alt={analysis_icon} width={24} height={24} />
@@ -74,7 +70,6 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
                         <p>{message.example_best_move}</p>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            </div>
-        </div>
+        </RawTextBubble>
     )
 }
