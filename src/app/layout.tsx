@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@vercel/analytics/react"
-import DisableIphoneZoomBehaviour from "@/components/disable-iphone-zoom-behaviour";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,7 +26,6 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <DisableIphoneZoomBehaviour />
         <Toaster />
         <Analytics />
       </body>

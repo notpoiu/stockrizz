@@ -127,7 +127,7 @@ function ConversationCreationActions({ messages, setMessages, is_for_mobile }: {
                     
                     <div className="grid w-full gap-1.5 mt-3">
                         <Label htmlFor="message">Your message</Label>
-                        <Textarea placeholder="Type your message here."  onChange={(event) => { setMessage(event.target.value); }} />
+                        <Textarea placeholder="Type your message here." className="text-[16px]"  onChange={(event) => { setMessage(event.target.value); }} />
                     </div>
 
                     <AlertDialogFooter>
