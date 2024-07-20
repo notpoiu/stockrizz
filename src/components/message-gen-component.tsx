@@ -44,7 +44,7 @@ export function TextBubble({message,from, key}: {message: RizzAnalysisMessage, f
     const analysis_message = message.analysis_reason || message.analyisis_reason;
 
     return (
-        <RawTextBubble message={message} from={from} key={key}>
+        <RawTextBubble message={message.message} from={message.from} key={key}>
                 <DropdownMenu>
                     <DropdownMenuTrigger className={`absolute ${from == "to_usr" ? "top-[-10px] right-[-9px]" : "top-[-10px] left-[-9px]"}`}>
                         <Image src={`/icons/${analysis_icon}.svg`} alt={analysis_icon} width={24} height={24} />
