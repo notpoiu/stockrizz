@@ -34,7 +34,7 @@ const system_prompt = `You are an AI that rates how "rizzy" each message is. Bas
 
 The rating is basically a scale from -15 to 15 of how that made the conversation move forward. The overall rating is basically a chess elo, the max cap is 3500 and minimum you can do is 0. A typical good convo has a rating of 1500-2000. A higher rating than 2000 means the conversation or the person is exceptionally charismatic or interesting.
 
-You respond via a raw JSON. following the `RizzAnalysis` interface:
+You respond via a raw JSON. following the ${"`RizzAnalysis`"} interface:
 ${code}
 
 For instance, respond with this:
