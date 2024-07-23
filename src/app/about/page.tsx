@@ -15,7 +15,7 @@ export default function AboutPage() {
                 <p className="mb-2">A: Stockrizz under the hood uses a openai's GPT-4o to analyse your rizz.</p>
 
                 <p className="font-bold">Q: How accurate is Stockrizz?</p>
-                <p className="mb-2">A: Stockrizz can make some mistakes, if you are a Developer or a Prompt Engineer, and want to help reduce these errors you may find the full site source code @ <Link href="https://github.com/notpoiu/stockrizz">Github</Link></p>
+                <p className="mb-2">A: Stockrizz can make some mistakes, if you are a Developer or a Prompt Engineer, and want to help reduce these errors you may find the full site source code @ <Link href="https://github.com/notpoiu/stockrizz" className="text-[#38bdf8] underline" target="_blank">Github</Link></p>
             </div>
             <Link href={"/"}>
                 <Button>Go Back</Button>
