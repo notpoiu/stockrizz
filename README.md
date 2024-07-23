@@ -61,5 +61,5 @@ I recommend deploying on vercel.
 ## Contributing
 
 Create a PR to contribute
-## Lisence
-This project is lisenced under the [MIT Lisence](LISENCE.md)
+## License
+This project is licensed under the [MIT License](LICENSE.md)
