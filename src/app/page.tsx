@@ -23,7 +23,7 @@ export default function Home() {
       <div className="fixed bottom-2 w-screen mb-3">
         <div className="flex justify-center items-center flex-row">
 
-          <p className="text-xs text-muted-foreground">Made with ❤️ by notpoiu</p>
+          <p className="text-xs text-muted-foreground">Made with ❤️ by upio</p>
           <div className="flex flex-row justify-center items-center">
             <Link href={"https://github.com/notpoiu/stockrizz"} target="_blank">
               <Button variant={"outline"} className="px-3 py-2 ml-2">
