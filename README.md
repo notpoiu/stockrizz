@@ -9,12 +9,11 @@ Took inspiration from [this tiktok](https://vm.tiktok.com/ZMrBfDyP9/) and though
 ## Setup
 
 First, get your [openai api key](https://platform.openai.com/api-keys).
-Then, get your [github api key](https://github.com/settings/tokens?type=beta) (set the "Contents" permission in repository permissions as "Read and write"). NOTE THAT CLASSIC TOKENS WILL ALSO WORK.
 
 Then create a new repository on github and get the owner and the name of the repository.
+Then, get your [github api key](https://github.com/settings/tokens?type=beta) (select the created repo and set the "Contents" permission in repository permissions as "Read and write"). NOTE THAT CLASSIC TOKENS WILL ALSO WORK.
 
-After the creation of the repository, clone the stockrizz repository and navigate to the root of the project.
-
+After the you got your api key, clone the stockrizz repository and navigate to the root of the project.
 
 Then create a new environement file (ex: `.env.local`).
 Then put this in your environement file
