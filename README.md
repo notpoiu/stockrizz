@@ -61,5 +61,7 @@ I recommend deploying on vercel.
 ## Contributing
 
 Create a PR to contribute
+The prompt given to gpt-4o is in the root directory ([prompt.md](prompt.md))
+
 ## License
 This project is licensed under the [MIT License](LICENSE.md)
