@@ -74,7 +74,7 @@ async function analyse(content: any[]) {
 
     for (let i = 0; i < 3; i++) {
         const gpt_response = await openai.chat.completions.create({
-            model: "gpt-4o",
+            model: "gpt-4o-mini",
             messages: [
                 {
                     "role": "system",
