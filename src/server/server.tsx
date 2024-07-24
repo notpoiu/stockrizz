@@ -28,7 +28,7 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const file_path = path.join(process.cwd(), "prompt.md");
+const file_path = "./prompt.md";
 const system_prompt = fs.readFileSync(file_path, "utf8");
 
 async function analyse(content: any[]) {
