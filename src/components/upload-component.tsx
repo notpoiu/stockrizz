@@ -105,14 +105,7 @@ export function UploadComponent() {
                         toast.promise(AnalyseImage(base64), {
                             loading: "Analysing...",
                             success: (slug: string) => {
-                                // @ts-ignore
-                                const isInStandaloneMode = () => (window.matchMedia('(display-mode: standalone)').matches) || (window.navigator.standalone) || document.referrer.includes('android-app://');
-
-                                if (isInStandaloneMode()) {
-                                    window.open(`${window.location.origin}/conversation/analysis/${slug}`,"_blank","toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400");
-                                }else{
-                                    router.push(`/conversation/analysis/${slug}`);
-                                }
+                                router.push(`/conversation/analysis/${slug}`);
 
                                 return "Image analysed successfully!";
                             },
