@@ -2,12 +2,12 @@
 
 import OpenAI from "openai";
 
+import path from "path";
+import fs from "fs";
 import { z } from "zod";
 import { message, RizzAnalysis } from "./types";
 
 import { Octokit } from "@octokit/rest";
-import path from "path";
-import fs from "fs";
 
 const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
@@ -28,10 +28,22 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
 });
 
-const file_path = path.join(process.cwd(), 'prompt.md');;
-const system_prompt = fs.readFileSync(file_path, "utf8");
+async function fetch_prompt() {
+    if (process.env.NODE_ENV === "development") {
+        const file_path = path.join(process.cwd(), 'prompt.md');
+        const system_prompt = fs.readFileSync(file_path, "utf8");
+
+        return system_prompt;
+    }
+
+    const res = await fetch("/api/get_prompt");
+    const system_prompt = await res.text();
+    return system_prompt;
+}
 
 async function analyse(content: any[]) {
+    const system_prompt = await fetch_prompt();
+
     let response = {};
 
     for (let i = 0; i < 3; i++) {
