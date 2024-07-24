@@ -8,6 +8,7 @@ import { z } from "zod";
 import { message, RizzAnalysis } from "./types";
 
 import { Octokit } from "@octokit/rest";
+import { headers } from "next/headers";
 
 const RizzAnalysisMessageSchema = z.object({
     message: z.string(),
@@ -29,6 +30,8 @@ const openai = new OpenAI({
 });
 
 async function fetch_prompt() {
+    const headersList = headers();
+    
     if (process.env.NODE_ENV === "development") {
         const file_path = path.join(process.cwd(), 'prompt.md');
         const system_prompt = fs.readFileSync(file_path, "utf8");
@@ -36,7 +39,10 @@ async function fetch_prompt() {
         return system_prompt;
     }
 
-    const res = await fetch("/api/get_prompt");
+    const protocol = process.env.NODE_ENV === "production" ? "https:" : "http:";
+    const base_url = process.env.NODE_ENV === "production" ? headersList.get('host') : "localhost:3000";
+
+    const res = await fetch(`${protocol}//${base_url}/api/get_prompt`);
     const system_prompt = await res.text();
     return system_prompt;
 }
