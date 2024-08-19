@@ -7,6 +7,8 @@ import fs from "fs";
 import { z } from "zod";
 import { message, RizzAnalysis } from "./types";
 
+import { zodResponseFormat } from "openai/helpers/zod";
+
 import { Octokit } from "@octokit/rest";
 import { headers } from "next/headers";
 
@@ -48,56 +50,24 @@ async function fetch_prompt() {
 }
 
 async function analyse(content: any[]) {
-    const system_prompt = await fetch_prompt();
+  const system_prompt = await fetch_prompt();
 
-    let response = {};
-
-    for (let i = 0; i < 3; i++) {
-        const gpt_response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-                {
-                    "role": "system",
-                    // @ts-ignore
-                    "content": [
-                        {
-                            "type": "text",
-                            "text": system_prompt
-                        }
-                    ]
-                },
-                {
-                    "role": "user",
-                    "content": content
-                },
-            ],
-            temperature: 1,
-            max_tokens: 4095,
-            top_p: 1,
-            frequency_penalty: 0,
-            presence_penalty: 0,
-        });
-
-        try{
-            response = JSON.parse(gpt_response.choices[0].message.content?.replaceAll("```json","").replaceAll("```","") || "{analysis: [], overall_rating: 0}");
-            
-            if (response && RizzAnalysisSchema.safeParse(response).success) {
-                break;
-            } else {
-                console.log("Invalid response, retrying...");
-                console.log(response);
-            }
-        } catch (e) {
-            console.log("Invalid response, retrying...");
-            break;
-        }
-    }
-
-    if (!RizzAnalysisSchema.safeParse(response)) {
-        throw new Error("Invalid response from GPT-4o");
-    }
-    
-    return response as RizzAnalysis;
+  const gpt_response = await openai.beta.chat.completions.parse({
+    model: "gpt-4o-2024-08-06",
+    messages: [
+      {
+          "role": "system",
+          "content": system_prompt
+      },
+      {
+          "role": "user",
+          "content": content
+      },
+    ],
+    response_format: zodResponseFormat(RizzAnalysisSchema, "analysis")
+  })
+  
+  return gpt_response.choices[0].message.parsed as RizzAnalysis;
 }
 
 export async function AnalyseImage(img_b64: string) {
